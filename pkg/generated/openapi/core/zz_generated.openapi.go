@@ -268,7 +268,6 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		v1.VsphereVirtualDiskVolumeSource{}.OpenAPIModelName():    schema_k8sio_api_core_v1_VsphereVirtualDiskVolumeSource(ref),
 		v1.WeightedPodAffinityTerm{}.OpenAPIModelName():           schema_k8sio_api_core_v1_WeightedPodAffinityTerm(ref),
 		v1.WindowsSecurityContextOptions{}.OpenAPIModelName():     schema_k8sio_api_core_v1_WindowsSecurityContextOptions(ref),
-		v1.WorkloadReference{}.OpenAPIModelName():                 schema_k8sio_api_core_v1_WorkloadReference(ref),
 		resource.Quantity{}.OpenAPIModelName():                    schema_apimachinery_pkg_api_resource_Quantity(ref),
 		metav1.APIGroup{}.OpenAPIModelName():                      schema_pkg_apis_meta_v1_APIGroup(ref),
 		metav1.APIGroupList{}.OpenAPIModelName():                  schema_pkg_apis_meta_v1_APIGroupList(ref),
@@ -9674,18 +9673,12 @@ func schema_k8sio_api_core_v1_PodSpec(ref common.ReferenceCallback) common.OpenA
 							Format:      "",
 						},
 					},
-					"workloadRef": {
-						SchemaProps: spec.SchemaProps{
-							Description: "WorkloadRef provides a reference to the Workload object that this Pod belongs to. This field is used by the scheduler to identify the PodGroup and apply the correct group scheduling policies. The Workload object referenced by this field may not exist at the time the Pod is created. This field is immutable, but a Workload object with the same name may be recreated with different policies. Doing this during pod scheduling may result in the placement not conforming to the expected policies.",
-							Ref:         ref(v1.WorkloadReference{}.OpenAPIModelName()),
-						},
-					},
 				},
 				Required: []string{"containers"},
 			},
 		},
 		Dependencies: []string{
-			v1.Affinity{}.OpenAPIModelName(), v1.Container{}.OpenAPIModelName(), v1.EphemeralContainer{}.OpenAPIModelName(), v1.HostAlias{}.OpenAPIModelName(), v1.LocalObjectReference{}.OpenAPIModelName(), v1.PodDNSConfig{}.OpenAPIModelName(), v1.PodOS{}.OpenAPIModelName(), v1.PodReadinessGate{}.OpenAPIModelName(), v1.PodResourceClaim{}.OpenAPIModelName(), v1.PodSchedulingGate{}.OpenAPIModelName(), v1.PodSecurityContext{}.OpenAPIModelName(), v1.ResourceRequirements{}.OpenAPIModelName(), v1.Toleration{}.OpenAPIModelName(), v1.TopologySpreadConstraint{}.OpenAPIModelName(), v1.Volume{}.OpenAPIModelName(), v1.WorkloadReference{}.OpenAPIModelName(), resource.Quantity{}.OpenAPIModelName()},
+			v1.Affinity{}.OpenAPIModelName(), v1.Container{}.OpenAPIModelName(), v1.EphemeralContainer{}.OpenAPIModelName(), v1.HostAlias{}.OpenAPIModelName(), v1.LocalObjectReference{}.OpenAPIModelName(), v1.PodDNSConfig{}.OpenAPIModelName(), v1.PodOS{}.OpenAPIModelName(), v1.PodReadinessGate{}.OpenAPIModelName(), v1.PodResourceClaim{}.OpenAPIModelName(), v1.PodSchedulingGate{}.OpenAPIModelName(), v1.PodSecurityContext{}.OpenAPIModelName(), v1.ResourceRequirements{}.OpenAPIModelName(), v1.Toleration{}.OpenAPIModelName(), v1.TopologySpreadConstraint{}.OpenAPIModelName(), v1.Volume{}.OpenAPIModelName(), resource.Quantity{}.OpenAPIModelName()},
 	}
 }
 
@@ -14211,42 +14204,6 @@ func schema_k8sio_api_core_v1_WindowsSecurityContextOptions(ref common.Reference
 	}
 }
 
-func schema_k8sio_api_core_v1_WorkloadReference(ref common.ReferenceCallback) common.OpenAPIDefinition {
-	return common.OpenAPIDefinition{
-		Schema: spec.Schema{
-			SchemaProps: spec.SchemaProps{
-				Description: "WorkloadReference identifies the Workload object and PodGroup membership that a Pod belongs to. The scheduler uses this information to apply workload-aware scheduling semantics.",
-				Type:        []string{"object"},
-				Properties: map[string]spec.Schema{
-					"name": {
-						SchemaProps: spec.SchemaProps{
-							Description: "Name defines the name of the Workload object this Pod belongs to. Workload must be in the same namespace as the Pod. If it doesn't match any existing Workload, the Pod will remain unschedulable until a Workload object is created and observed by the kube-scheduler. It must be a DNS subdomain.",
-							Default:     "",
-							Type:        []string{"string"},
-							Format:      "",
-						},
-					},
-					"podGroup": {
-						SchemaProps: spec.SchemaProps{
-							Description: "PodGroup is the name of the PodGroup within the Workload that this Pod belongs to. If it doesn't match any existing PodGroup within the Workload, the Pod will remain unschedulable until the Workload object is recreated and observed by the kube-scheduler. It must be a DNS label.",
-							Default:     "",
-							Type:        []string{"string"},
-							Format:      "",
-						},
-					},
-					"podGroupReplicaKey": {
-						SchemaProps: spec.SchemaProps{
-							Description: "PodGroupReplicaKey specifies the replica key of the PodGroup to which this Pod belongs. It is used to distinguish pods belonging to different replicas of the same pod group. The pod group policy is applied separately to each replica. When set, it must be a DNS label.",
-							Type:        []string{"string"},
-							Format:      "",
-						},
-					},
-				},
-				Required: []string{"name", "podGroup"},
-			},
-		},
-	}
-}
 
 func schema_apimachinery_pkg_api_resource_Quantity(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.EmbedOpenAPIDefinitionIntoV2Extension(common.OpenAPIDefinition{
